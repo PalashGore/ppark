@@ -1,7 +1,5 @@
 version: '2'
 services:
-  application:
-    image: ppark-docker
   ppark-app:
     container_name: ppark-container
     build:
