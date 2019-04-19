@@ -1,0 +1,16 @@
+version: '2'
+services:
+  application:
+    image: ppark-docker
+  ppark-app:
+    container_name: ppark-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/ppark'
+      - '/ppark/node_modules'
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE=dev
