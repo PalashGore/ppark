@@ -1,0 +1,17 @@
+{
+    "name": "api",
+    "version": "1.0.0",
+    "description": "",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.16.4",
+        "mysql": "^2.17.1",
+        "nodemon": "^1.18.11"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

@@ -1,10 +1,11 @@
-#Staging
-FROM node:8.10.0 as ppark-local-build
+FROM node:8.10.0
 
 WORKDIR /ppark
 
-COPY package.json /ppark/package.json
+COPY package.json /ppark/
 
-RUN npm install
+RUN npm install npm cache clean --force
 
-CMD ["npm", "start"]
+CMD npm start
+
+EXPOSE 3000

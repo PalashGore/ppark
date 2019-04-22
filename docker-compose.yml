@@ -1,13 +1,29 @@
 version: '2'
 services:
-  ppark-app:
-    build:
+  parking:
+    build: 
       context: .
       dockerfile: Dockerfile
     volumes:
       - '.:/ppark'
-      - '/ppark/node_modules'
     ports:
-      - '3000:3000'
+      - 3000:3000
     environment:
-      - NODE=dev
+      - APP_ENV=dev
+ 
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - '/api'
+    ports:
+      - 4000:4000
+    depends_on:
+      - parking
+
+
+      
+
+  
+  
