@@ -9,9 +9,10 @@ app.use(cors());
 const pool = mysql.createPool({
     connectionLimit : 10,
     host: '127.0.0.1',
+    port: 3306,
     user: 'palash',
     password: 'palash',
-    database: 'Treehouse'
+    database: 'Parking'
 })
 
 app.get('/', (req, res) => {

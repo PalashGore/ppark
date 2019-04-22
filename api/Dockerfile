@@ -4,7 +4,7 @@ WORKDIR /api
 
 COPY package.json /api
 
-RUN npm install npm cache clean --force
+RUN npm install
 
 CMD node api.js
 
