@@ -16,7 +16,7 @@ services:
       context: ./api
       dockerfile: Dockerfile
     volumes:
-      - '/api'
+      - './api:/api'
     ports:
       - 4000:4000
     depends_on:
