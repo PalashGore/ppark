@@ -1,7 +1,6 @@
 version: '2'
 services:
   ppark-app:
-    container_name: ppark-container
     build:
       context: .
       dockerfile: Dockerfile

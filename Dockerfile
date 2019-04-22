@@ -1,9 +1,7 @@
 #Staging
 FROM node:8.10.0 as ppark-local-build
-RUN mkdir /ppark
-WORKDIR /ppark
 
-ENV PATH /ppark/node_modules/.bin:$PATH
+WORKDIR /ppark
 
 COPY package.json /ppark/package.json
 
