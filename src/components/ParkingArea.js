@@ -3,7 +3,6 @@ import { withRouter} from 'react-router-dom';
 import { Button } from 'reactstrap';
 
 class ParkingArea extends React.Component {
-
     render() {
         return (        
             <tr>

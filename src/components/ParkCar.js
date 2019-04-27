@@ -17,19 +17,19 @@ class ParkCar extends React.Component {
 
     saveCarDetails(event) {
         event.preventDefault();
-        const car = {
+        const newCar = {
             name: this.name.value,
             phoneNumber: this.phoneNumber.value,
             regNumber: this.regNumber.value.toUpperCase()
         }
 
-        if (car.regNumber === '') {
+        if (newCar.regNumber === '') {
             this.setState ({
                 regNumberError: 'Please enter Registration Number'
             });
         } else {
-            this.props.parkCar(car);
-            this.feedbackForm.reset();
+            this.props.parkCar(newCar);
+            this.parkingForm.reset();
         }
     }
 
@@ -43,7 +43,7 @@ class ParkCar extends React.Component {
                 </div>
 
                 <div className="col-lg-12 col-md-12 col-sm-12 padding">                    
-                    <form ref={(input) => this.feedbackForm = input}>
+                    <form ref={(input) => this.parkingForm = input}>
                         <input ref={(input) => this.name = input} className="col-lg-12 col-md-12 col-sm-12 margin-top-20" type="text" placeholder="Name" />
                         <input ref={(input) => this.phoneNumber = input} className="col-lg-12 col-md-12 col-sm-12 margin-top-20" type="text" placeholder="Phone Number" />
                         <input ref={(input) => this.regNumber = input} className="col-lg-12 col-md-12 col-sm-12 margin-top-20" type="text" placeholder="Registration Number" />
