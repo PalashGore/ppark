@@ -28,19 +28,20 @@ class App extends Component {
         headers: {
           'content-type': 'application/json',
         },
-      })
-      .then(res => {
-        const storedCars = res.data;
-        const length = storedCars['data'].length;
-        for (let i = 0; i < length; i++) {
-          cars[i+1] = storedCars['data'][i];
-        }
-        
-        this.setState({ 
-          cars: cars
-        });
     })
-  }
+    .then(res => {
+      const storedCars = res.data;
+      const length = storedCars['data'].length;
+      for (let i = 0; i < length; i++) {
+        cars[i+1] = storedCars['data'][i];
+      }
+
+      this.setState({ 
+        cars: cars
+      });
+      
+    })
+  };
 
   parkCar(newCar) {
     const cars = { ...this.state.cars };
