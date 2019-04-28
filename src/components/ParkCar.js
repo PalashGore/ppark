@@ -11,6 +11,13 @@ class ParkCar extends React.Component {
         this.saveCarDetails = this.saveCarDetails.bind(this);
 
         this.state = {
+            car: {
+                name: '',
+                phoneNumber: '',
+                regNumber: ''
+            },
+            nameError: '',
+            phoneNumberError: '',
             regNumberError: ''
         }
     }
@@ -23,13 +30,36 @@ class ParkCar extends React.Component {
             regNumber: this.regNumber.value.toUpperCase()
         }
 
-        if (newCar.regNumber === '') {
+        this.setState({ car: newCar });
+
+        if (!newCar.name) {
             this.setState ({
-                regNumberError: 'Please enter Registration Number'
+                nameError: 'Please enter your Name.',
+                phoneNumberError: '',
+                regNumberError: ''
+            });
+        } else if (!newCar.phoneNumber) {
+            this.setState ({
+                phoneNumberError: 'Please enter your Phone Number.',
+                nameError: '',
+                regNumberError: ''
+            });
+        } else if (!newCar.regNumber) {
+            this.setState ({
+                regNumberError: 'Please enter your car\'s Registration Number.',
+                nameError: '',
+                phoneNumberError: ''
             });
         } else {
-            this.props.parkCar(newCar);
+            this.setState ({
+                car: {},
+                regNumberError: '',
+                nameError: '',
+                phoneNumberError: ''
+            });
             this.parkingForm.reset();
+            this.props.parkCar(newCar);
+            
         }
     }
 
@@ -44,11 +74,13 @@ class ParkCar extends React.Component {
 
                 <div className="col-lg-12 col-md-12 col-sm-12 padding">                    
                     <form ref={(input) => this.parkingForm = input}>
-                        <input ref={(input) => this.name = input} className="col-lg-12 col-md-12 col-sm-12 margin-top-20" type="text" placeholder="Name" />
-                        <input ref={(input) => this.phoneNumber = input} className="col-lg-12 col-md-12 col-sm-12 margin-top-20" type="text" placeholder="Phone Number" />
-                        <input ref={(input) => this.regNumber = input} className="col-lg-12 col-md-12 col-sm-12 margin-top-20" type="text" placeholder="Registration Number" />
+                        <input ref={(input) => this.name = input} className="col-lg-12 col-md-12 col-sm-12 margin-top-20" defaultValue={this.state.car.name} type="text" placeholder="Name" />
+                        <span className="error">{this.state.nameError}</span>
+                        <input ref={(input) => this.phoneNumber = input} className="col-lg-12 col-md-12 col-sm-12 margin-top-20" defaultValue={this.state.car.phoneNumber} type="text" placeholder="Phone Number" />
+                        <span className="error">{this.state.phoneNumberError}</span>
+                        <input ref={(input) => this.regNumber = input} className="col-lg-12 col-md-12 col-sm-12 margin-top-20" defaultValue={this.state.car.regNumber} type="text" placeholder="Registration Number" />
                         <span className="error">{this.state.regNumberError}</span>
-                        <Button color="primary" size="sm" className="margin-top-20 float-right" onClick={(e) => this.saveCarDetails(e)}> SUBMIT </Button>               
+                        <Button color="primary" size="sm" className="margin-top-20 float-right" onClick={(e) => this.saveCarDetails(e)}> SUBMIT </Button>                               
                     </form>
                 </div>
 

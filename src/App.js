@@ -14,17 +14,16 @@ class App extends Component {
   constructor() {
     super();
 
-    this.parkedCars = this.parkedCars.bind(this);
-    this.removeCar = this.removeCar.bind(this);
+    this.parkCar = this.parkCar.bind(this);
+    this.removeParkedCar = this.removeParkedCar.bind(this);
 
     this.state = {
       cars: {}
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const cars = { ...this.state.cars };
-    console.log(cars);
     axios.get('http://localhost:4000/cars', {
         headers: {
           'content-type': 'application/json',
@@ -36,14 +35,17 @@ class App extends Component {
         for (let i = 0; i < length; i++) {
           cars[i+1] = storedCars['data'][i];
         }
-
-        this.setState({ cars: cars });
+        
+        this.setState({ 
+          cars: cars
+        });
     })
   }
 
-  parkedCars(newCar) {
+  parkCar(newCar) {
     const cars = { ...this.state.cars };
-
+    const regNumber = newCar.regNumber;
+    cars[regNumber] = newCar;
     axios.post(`http://localhost:4000/park`, {newCar}, {
         headers: {
           'content-type': 'application/json',
@@ -55,10 +57,37 @@ class App extends Component {
       .catch(err => {
         console.log(err);
       })
+
+      this.setState({ 
+        cars: cars,
+      });
   };
 
-  removeCar() {
+  removeParkedCar(index, regNumber) {
+    const cars = { ...this.state.cars };
+    //Delete the key value from object
+    const key = index ? index : regNumber;
+    delete cars[key];
+    this.setState ({
+        cars: cars
+    });
 
+    //Delete the data from db
+    axios.post(`http://localhost:4000/leave`, {regNumber}, {
+        headers: {
+          'content-type': 'application/json',
+        },
+    })
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+
+    this.setState({ 
+      cars: cars
+    });
   };
 
   render() {
@@ -69,7 +98,7 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
         </header>
-        <ParkCar parkCar={this.parkedCars} parkLocation={this.props.match.params.location} />
+        <ParkCar parkCar={this.parkCar} parkLocation={this.props.match.params.location} />
         { !isEmpty ?          
           <Jumbotron className="row">
             <Table striped> 
@@ -83,7 +112,7 @@ class App extends Component {
               </thead>
               <tbody>              
                 {                        
-                  Object.keys(cars).map(key => <ParkingArea key={key} carDetails={cars[key]} removeCar={this.removeCar}  />) 
+                  Object.keys(cars).map(key => <ParkingArea key={key} index={key} carDetails={cars[key]} removeParkedCar={this.removeParkedCar} />)
                 }             
               </tbody>
             </Table>

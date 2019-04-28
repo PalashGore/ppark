@@ -34,14 +34,28 @@ app.get('/cars', (req, res) => {
 
 app.post('/park', (req, res) => {    
     const { name, phoneNumber, regNumber } = req.body.newCar;
-    const addParkedCars = `INSERT INTO Parking.parkedCars (name, phone_number, reg_number)
+    const addParkedCars = `INSERT INTO Parking.parkedCars (name, phoneNumber, regNumber)
     VALUES ('${name}','${phoneNumber}', '${regNumber}')`;
     pool.query(addParkedCars, (err, result) => {
         if(err) {
-            return res.send(`Error while Parking Car ${err}`);
+            return res.send(`Error while Getting Parking Lot Data ${err}`);
         }
         else {
-            return res.send(`Car Parked.`);
+            return res.send(`Parking Lot Data Returned.`);
+        }
+    });
+});
+
+app.post('/leave', (req, res) => {    
+    const regNumber = req.body.regNumber;
+    console.log(regNumber);
+    const addParkedCars = `Delete From Parking.parkedCars where regNumber='${regNumber}'`;
+    pool.query(addParkedCars, (err, result) => {
+        if(err) {
+            return res.send(`Error while Leaving Parking Lot ${err}`);
+        }
+        else {
+            return res.send(`Car Left.`);
         }
     });
 });
