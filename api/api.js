@@ -8,12 +8,12 @@ app.use(bodyParser.json())
 app.use(cors());
 
 const pool = mysql.createPool({
-    connectionLimit : 10,
-    host: '127.0.0.1',
+    connectionLimit : 5,
+    host: 'us-cdbr-iron-east-02.cleardb.net',
     port: 3306,
-    user: 'palash',
-    password: 'palash',
-    database: 'Parking'
+    user: 'ba27dac6d6fc62',
+    password: '063c5a21',
+    database: 'heroku_74f100aae70dd38'
 })
 
 app.get('/', (req, res) => {
@@ -34,7 +34,7 @@ app.get('/cars', (req, res) => {
 
 app.post('/park', (req, res) => {    
     const { name, phoneNumber, regNumber } = req.body.newCar;
-    const addParkedCars = `INSERT INTO Parking.parkedCars (name, phoneNumber, regNumber)
+    const addParkedCars = `INSERT INTO parkedCars (name, phoneNumber, regNumber)
     VALUES ('${name}','${phoneNumber}', '${regNumber}')`;
     pool.query(addParkedCars, (err, result) => {
         if(err) {
@@ -49,7 +49,7 @@ app.post('/park', (req, res) => {
 app.post('/leave', (req, res) => {    
     const regNumber = req.body.regNumber;
     console.log(regNumber);
-    const addParkedCars = `Delete From Parking.parkedCars where regNumber='${regNumber}'`;
+    const addParkedCars = `Delete From parkedCars where regNumber='${regNumber}'`;
     pool.query(addParkedCars, (err, result) => {
         if(err) {
             return res.send(`Error while Leaving Parking Lot ${err}`);
