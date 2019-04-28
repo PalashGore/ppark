@@ -24,7 +24,7 @@ class App extends Component {
 
   componentDidMount() {
     const cars = { ...this.state.cars };
-    axios.get('http://localhost:4000/cars', {
+    axios.get('/cars', {
         headers: {
           'content-type': 'application/json',
         },
@@ -47,7 +47,7 @@ class App extends Component {
     const cars = { ...this.state.cars };
     const regNumber = newCar.regNumber;
     cars[regNumber] = newCar;
-    axios.post(`http://localhost:4000/park`, {newCar}, {
+    axios.post(`/park`, {newCar}, {
         headers: {
           'content-type': 'application/json',
         },
@@ -74,7 +74,7 @@ class App extends Component {
     });
 
     //Delete the data from db
-    axios.post(`http://localhost:4000/leave`, {regNumber}, {
+    axios.post(`/leave`, {regNumber}, {
         headers: {
           'content-type': 'application/json',
         },
