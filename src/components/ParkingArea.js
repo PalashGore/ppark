@@ -3,14 +3,14 @@ import { withRouter} from 'react-router-dom';
 import { Button } from 'reactstrap';
 
 class ParkingArea extends React.Component {
-
     render() {
+        const { index, carDetails } = this.props;
         return (        
             <tr>
-                <td> {this.props.carDetails.name ? this.props.carDetails.name : 'N/A' }</td>
-                <td> {this.props.carDetails.phoneNumber ? this.props.carDetails.phoneNumber : 'N/A'} </td>
-                <td> {this.props.carDetails.regNumber}</td>
-                <td> <Button color="primary" size="sm" onClick={this.props.removeCar(this.props.index)}> REMOVE </Button> </td>
+                <td> {carDetails.name ? carDetails.name : 'N/A' }</td>
+                <td> {carDetails.phoneNumber ? carDetails.phoneNumber : 'N/A'} </td>
+                <td> {carDetails.regNumber}</td>
+                <td> <Button color="primary" size="sm" onClick={() => this.props.removeParkedCar(index, carDetails.regNumber)}> REMOVE </Button> </td>
             </tr>
         )
     }

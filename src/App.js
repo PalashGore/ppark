@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { withRouter} from 'react-router-dom';
-import { Jumbotron, Table, Button } from 'reactstrap';
+import { Jumbotron, Table } from 'reactstrap';
 import logo from './logo.svg';
 import './App.css';
 import ParkCar from './components/ParkCar';
@@ -13,73 +14,110 @@ class App extends Component {
   constructor() {
     super();
 
-    this.parkedCars = this.parkedCars.bind(this);
-    this.removeCar = this.removeCar.bind(this);
+    this.parkCar = this.parkCar.bind(this);
+    this.removeParkedCar = this.removeParkedCar.bind(this);
 
     this.state = {
-      cars: {},
-      formStatus: true
+      cars: {}
     };
-
   }
 
-  getParkedCars() {
-    fetch('http://localhost:4000/cars')
-    .then(response => response.json())
-    .then(response => this.setState({ car: response.data }))
-    .catch(err => console.log(err))
+  componentDidMount() {
+    const cars = { ...this.state.cars };
+    axios.get('http://localhost:4000/cars', {
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(res => {
+        const storedCars = res.data;
+        const length = storedCars['data'].length;
+        for (let i = 0; i < length; i++) {
+          cars[i+1] = storedCars['data'][i];
+        }
+        
+        this.setState({ 
+          cars: cars
+        });
+    })
   }
 
-  storeParkedCars(cars) {
-    const {name, phoneNumber, regNumber } = cars;
-    fetch(`http://localhost:4000/park?name=${name}&phoneNumber=${phoneNumber}&regNumber=${regNumber}`)
-      .then(this.getParkedCars)
-      .catch(err => console.error(err))
-  }
-
-  parkedCars(newCar) {
-    const cars = {...this.state.cars};
+  parkCar(newCar) {
+    const cars = { ...this.state.cars };
     const regNumber = newCar.regNumber;
-    cars[`${regNumber}`] = newCar;
+    cars[regNumber] = newCar;
+    axios.post(`http://localhost:4000/park`, {newCar}, {
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
+      this.setState({ 
+        cars: cars,
+      });
+  };
+
+  removeParkedCar(index, regNumber) {
+    const cars = { ...this.state.cars };
+    //Delete the key value from object
+    const key = index ? index : regNumber;
+    delete cars[key];
+    this.setState ({
+        cars: cars
+    });
+
+    //Delete the data from db
+    axios.post(`http://localhost:4000/leave`, {regNumber}, {
+        headers: {
+          'content-type': 'application/json',
+        },
+    })
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+
     this.setState({ 
       cars: cars
     });
-
-    this.storeParkedCars(cars);
-  };
-
-  removeCar() {
-
   };
 
   render() {
-    const isEmpty = Object.keys(this.state.cars).length === 0 ? true : false;
+    const cars = { ...this.state.cars };
+    const isEmpty = !Object.keys(this.state.cars).length ? true : false;
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
         </header>
-        <ParkCar parkCar={this.parkedCars} parkLocation={this.props.match.params.location} />
-          { !isEmpty ? 
-            <Jumbotron className="row">
-              <Table striped> 
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Phone Number</th>
-                    <th>Car Registration</th>
-                    <th>Remove Car</th>
-                  </tr>
-                </thead>
-                <tbody>              
-                  {                          
-                    Object.keys(this.state.cars).map(key => <ParkingArea key={key} index={key} carDetails={this.state.cars[key]} removeCar={this.removeCar}  />) 
-                  }             
-                </tbody>
-              </Table>
-            </Jumbotron> 
-          : null }
-          <Button color="primary" size="sm" className="margin-top-20 float-right" onClick={this.getParkedCars}> GET CARS </Button>
+        <ParkCar parkCar={this.parkCar} parkLocation={this.props.match.params.location} />
+        { !isEmpty ?          
+          <Jumbotron className="row">
+            <Table striped> 
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Phone Number</th>
+                  <th>Car Registration</th>
+                  <th>Remove Car</th>
+                </tr>
+              </thead>
+              <tbody>              
+                {                        
+                  Object.keys(cars).map(key => <ParkingArea key={key} index={key} carDetails={cars[key]} removeParkedCar={this.removeParkedCar} />)
+                }             
+              </tbody>
+            </Table>
+          </Jumbotron>
+        : null }
       </div>
     )
   }
