@@ -21,3 +21,14 @@ services:
       - 4000:4000
     depends_on:
       - parking
+
+  database:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    volumes:
+      - './database:/var/lib/mysql'
+    ports:
+      - 3306:3306
+    depends_on:
+      - parking
