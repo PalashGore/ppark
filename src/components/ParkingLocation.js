@@ -12,6 +12,7 @@ class ParkingLocation extends React.Component {
         this.goToLocation = this.goToLocation.bind(this);
     }
 
+    //Get the input selection and push to new location. 
     goToLocation(event) {
         event.preventDefault();
         const location = this.location.value;

@@ -7,7 +7,7 @@ import App from './App';
 import ParkingLocation from './components/ParkingLocation';
 import ParkingArea from './components/ParkingArea';
 
-
+//Set the routes for app. 
 const Main = () => {
     return (
         <Router>

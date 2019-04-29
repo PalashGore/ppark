@@ -7,6 +7,7 @@ class ParkingArea extends React.Component {
         const { index, carDetails } = this.props;
         return (        
             <tr>
+                {/* Conditional rendering of variables. */}
                 <td> {carDetails.name ? carDetails.name : 'N/A' }</td>
                 <td> {carDetails.phoneNumber ? carDetails.phoneNumber : 'N/A'} </td>
                 <td> {carDetails.regNumber}</td>
