@@ -10,6 +10,7 @@ class ParkCar extends React.Component {
 
         this.saveCarDetails = this.saveCarDetails.bind(this);
 
+        //Set the initial state of the component.
         this.state = {
             car: {
                 name: '',
@@ -22,6 +23,7 @@ class ParkCar extends React.Component {
         }
     }
 
+    //validate the form input, display errors if any, set the error state, reset all on sucessful submit. 
     saveCarDetails(event) {
         event.preventDefault();
         const newCar = {

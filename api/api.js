@@ -7,6 +7,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.use(cors());
 
+//Create a connection pool so an active thread of connection is available. 
 const pool = mysql.createPool({
     connectionLimit : 10,
     host: '127.0.0.1',
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
     res.send('API Running on port 4000')
 });
 
+//Endpoint to GET all the cars in the parkedCars table. 
 app.get('/cars', (req, res) => {
     const showParkedCars = "Select * from Parking.parkedCars";
     pool.query(showParkedCars, (err, result) => {
@@ -32,7 +34,9 @@ app.get('/cars', (req, res) => {
     });
 });
 
+//Endpoint to POST car in the db.
 app.post('/park', (req, res) => {    
+    //Destructre the newCar Object from the request. 
     const { name, phoneNumber, regNumber } = req.body.newCar;
     const addParkedCars = `INSERT INTO Parking.parkedCars (name, phoneNumber, regNumber)
     VALUES ('${name}','${phoneNumber}', '${regNumber}')`;
@@ -46,6 +50,7 @@ app.post('/park', (req, res) => {
     });
 });
 
+//Endpoint to DELETE cars from the db. 
 app.post('/leave', (req, res) => {    
     const regNumber = req.body.regNumber;
     console.log(regNumber);
@@ -60,5 +65,6 @@ app.post('/leave', (req, res) => {
     });
 });
 
+//Port the app is listening for requests. 
 app.listen(4000);
 console.log("API is Running on port 4000");
