@@ -27,30 +27,31 @@ class App extends Component {
   //After elements render get all the cars from API adn set current the state.
   componentDidMount() {
     const cars = { ...this.state.cars };
-    axios.get('http://localhost:4000/cars', {
+    axios.get('/cars', {
         headers: {
           'content-type': 'application/json',
         },
-      })
-      .then(res => {
-        const storedCars = res.data;
-        const length = storedCars['data'].length;
-        for (let i = 0; i < length; i++) {
-          cars[i+1] = storedCars['data'][i];
-        }
-        
-        this.setState({ 
-          cars: cars
-        });
     })
-  }
+    .then(res => {
+      const storedCars = res.data;
+      const length = storedCars['data'].length;
+      for (let i = 0; i < length; i++) {
+        cars[i+1] = storedCars['data'][i];
+      }
+
+      this.setState({ 
+        cars: cars
+      });
+      
+    })
+  };
 
   //Method to store a new car in the db and update the state
   parkCar(newCar) {
     const cars = { ...this.state.cars };
     const regNumber = newCar.regNumber;
     cars[regNumber] = newCar;
-    axios.post(`http://localhost:4000/park`, {newCar}, {
+    axios.post(`/park`, {newCar}, {
         headers: {
           'content-type': 'application/json',
         },
@@ -78,7 +79,7 @@ class App extends Component {
     });
 
     //Delete the data from db
-    axios.post(`http://localhost:4000/leave`, {regNumber}, {
+    axios.post(`/leave`, {regNumber}, {
         headers: {
           'content-type': 'application/json',
         },
