@@ -25,6 +25,7 @@ services:
       - 4000:4000
     depends_on:
       - parking
+
   database:     
     image: mysql     
     container_name: ppark_db     

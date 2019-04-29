@@ -34,7 +34,7 @@ app.get('/cars', (req, res) => {
 
 app.post('/park', (req, res) => {    
     const { name, phoneNumber, regNumber } = req.body.newCar;
-    const addParkedCars = `INSERT INTO Parking.parkedCars (name, phoneNumber, regNumber)
+    const addParkedCars = `INSERT INTO parkedCars (name, phoneNumber, regNumber)
     VALUES ('${name}','${phoneNumber}', '${regNumber}')`;
     pool.query(addParkedCars, (err, result) => {
         if(err) {
@@ -49,7 +49,7 @@ app.post('/park', (req, res) => {
 app.post('/leave', (req, res) => {    
     const regNumber = req.body.regNumber;
     console.log(regNumber);
-    const addParkedCars = `Delete From Parking.parkedCars where regNumber='${regNumber}'`;
+    const addParkedCars = `Delete From parkedCars where regNumber='${regNumber}'`;
     pool.query(addParkedCars, (err, result) => {
         if(err) {
             return res.send(`Error while Leaving Parking Lot ${err}`);
@@ -60,5 +60,7 @@ app.post('/leave', (req, res) => {
     });
 });
 
-app.listen(4000);
-console.log("API is Running on port 4000");
+const port = 4000;
+
+app.listen(port);
+console.log(`API is Running on port ${port}`);
