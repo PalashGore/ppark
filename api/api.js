@@ -8,12 +8,12 @@ app.use(bodyParser.json())
 app.use(cors());
 
 const pool = mysql.createPool({
-    connectionLimit : 5,
-    host: 'us-cdbr-iron-east-02.cleardb.net',
-    port: 3306,
-    user: 'ba27dac6d6fc62',
-    password: '063c5a21',
-    database: 'heroku_74f100aae70dd38'
+    connectionLimit : 10,
+    host: '127.0.0.1',
+    port: 33060,
+    user: 'palash',
+    password: 'palash',
+    database: 'Parking'
 })
 
 app.get('/', (req, res) => {

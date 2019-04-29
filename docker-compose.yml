@@ -4,8 +4,10 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
+    command: npm start
     volumes:
       - '.:/ppark'
+      - /ppark/node_modules
     ports:
       - 3000:3000
     environment:
@@ -15,20 +17,28 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
+    command: node api.js
     volumes:
       - './api:/api'
+      - /api/node_modules
     ports:
       - 4000:4000
     depends_on:
       - parking
 
-  database:
-    build:
-      context: ./database
-      dockerfile: Dockerfile
-    volumes:
-      - './database:/var/lib/mysql'
-    ports:
-      - 3306:3306
+  database:     
+    image: mysql     
+    container_name: ppark_db     
+    command: mysqld --user=root     
+    volumes:       
+      - ./database:/docker-entrypoint-initdb.d     
+    ports:       
+      - "3307:3306"     
+    environment:       
+      MYSQL_DATABASE: Parking       
+      MYSQL_USER: "palash"       
+      MYSQL_PASSWORD: "palash"       
+      MYSQL_ROOT_PASSWORD: "palash"       
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     depends_on:
       - parking
