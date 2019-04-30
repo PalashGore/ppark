@@ -27,7 +27,7 @@ class App extends Component {
   //After elements render get all the cars from API adn set current the state.
   componentDidMount() {
     const cars = { ...this.state.cars };
-    axios.get('/cars', {
+    axios.get('/api/cars', {
         headers: {
           'content-type': 'application/json',
         },
@@ -51,7 +51,7 @@ class App extends Component {
     const cars = { ...this.state.cars };
     const regNumber = newCar.regNumber;
     cars[regNumber] = newCar;
-    axios.post(`/park`, {newCar}, {
+    axios.post(`/api/park`, {newCar}, {
         headers: {
           'content-type': 'application/json',
         },
@@ -79,7 +79,7 @@ class App extends Component {
     });
 
     //Delete the data from db
-    axios.post(`/leave`, {regNumber}, {
+    axios.post(`/api/leave`, {regNumber}, {
         headers: {
           'content-type': 'application/json',
         },

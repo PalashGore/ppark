@@ -10,19 +10,18 @@ app.use(cors());
 //Create a connection pool so an active thread of connection is available. 
 const pool = mysql.createPool({
     connectionLimit : 10,
-    host: '127.0.0.1',
-    port: 33060,
+    host: 'http://mysql:3306',
     user: 'palash',
     password: 'palash',
     database: 'Parking'
 })
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('API Running on port 4000')
 });
 
 //Endpoint to GET all the cars in the parkedCars table. 
-app.get('/cars', (req, res) => {
+app.get('/api/cars', (req, res) => {
     const showParkedCars = "Select * from Parking.parkedCars";
     pool.query(showParkedCars, (err, result) => {
         if(err) {
@@ -35,7 +34,7 @@ app.get('/cars', (req, res) => {
 });
 
 //Endpoint to POST car in the db.
-app.post('/park', (req, res) => {    
+app.post('/api/park', (req, res) => {    
     //Destructre the newCar Object from the request. 
     const { name, phoneNumber, regNumber } = req.body.newCar;
     const addParkedCars = `INSERT INTO parkedCars (name, phoneNumber, regNumber)
@@ -51,7 +50,7 @@ app.post('/park', (req, res) => {
 });
 
 //Endpoint to DELETE cars from the db. 
-app.post('/leave', (req, res) => {    
+app.post('/api/leave', (req, res) => {    
     const regNumber = req.body.regNumber;
     console.log(regNumber);
     const addParkedCars = `Delete From parkedCars where regNumber='${regNumber}'`;

@@ -33,7 +33,7 @@ services:
     volumes:       
       - ./database:/docker-entrypoint-initdb.d     
     ports:       
-      - "3307:3306"     
+      - "3306:3306"     
     environment:       
       MYSQL_DATABASE: Parking       
       MYSQL_USER: "palash"       
